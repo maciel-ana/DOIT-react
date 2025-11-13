@@ -1,0 +1,205 @@
+@use 'variables' as *;
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background-color: $background;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 2em;
+
+    p {
+        font-weight: 500;
+    }
+
+    .btn-sair {
+        padding: 10px 20px;
+        border: none;
+        border-radius: 10px;
+        background-color: $color;
+        color: #fff;
+        cursor: pointer;
+    }
+}
+
+.linha-header {
+    border: none;
+    height: 1px;
+    background-color: #E8EAED;
+    margin: 0 2em;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    margin: auto;
+    max-width: 1000px;
+    
+    .container-tarefas {
+        margin: 0 4em;
+    }
+
+    .titulo-nome {
+        padding: 3em 5em;
+
+        h3 {
+            font-size: 2rem;
+            color: $color-font;
+        }
+    }
+
+    .tarefasInput {
+        border: none;
+        border-radius: 10px;
+        width: 100%;
+        background-color: #fff;
+        padding: 15px;
+        outline: none;
+
+        &:focus {
+            border: 2px solid $color;
+        }
+    }
+
+    .tarefas {
+        background-color: #fff;
+        margin-top: 2em;
+        width: 100%;
+        height: auto;
+        padding: 2em;
+        border-radius: 10px;
+        margin-bottom: 2em;
+
+        .botoes {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            width: fit-content;
+            padding: 5px;
+            border-radius: 10px;
+            background-color: #dfdfe2;
+
+            .tab-button {
+                border: none;
+                border-radius: 10px;
+                background-color: transparent;
+                padding: 10px 30px;
+                font-weight: 500;
+                color: #858484;
+                cursor: pointer;
+
+                &:hover {
+                    color: $color-font-grey;
+                    background-color: #c3c3c3;
+                    transition: all 0.3s;
+                }
+
+                &.active {
+                    background-color: #fff;
+                    color: $color-font;
+                }
+            }
+
+
+        }
+
+        .linha {
+            margin-top: 1.5em;
+            margin-bottom: 0;
+            border: none;
+            height: 1px;
+            background-color: #E8EAED;
+            width: 100%;
+        }
+
+        .lista-tarefas {
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+            margin: 1.5em 0;
+
+            ul {
+                padding-left: 0;
+            }
+            
+            li {
+                list-style: none;
+                font-weight: 400;
+                color: #1F2937;
+                padding: 12px 0;
+                display: flex;
+                align-items: center;
+                gap: 14px;
+
+                input[type="checkbox"]{
+                    width: 20px;
+                    height: 20px;
+                    cursor: pointer;
+                    border: 2px solid #D1D5DB;
+                    border-radius: 4px;
+                    appearance: none;
+                    background-color: #fff;
+                    position: relative;
+
+                    &:hover {
+                        border-color: #9CA3AF;
+                    }
+
+                    &:checked {
+                        background-color: #3B82F6;
+                        border-color: #3B82F6;
+
+                        &::after {
+                            content: '✓';
+                            position: absolute;
+                            color: #fff;
+                            font-size: 14px;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                        }
+                    }
+
+                    &.concluida {
+                        text-decoration: line-through;
+                        color: #9CA3AF;
+                    }
+                }
+            }
+
+            .checkbox {
+                border: 1px solid #858484;
+            }
+        }
+
+        .info-tarefas {
+            display: flex;
+            justify-content: space-between;
+            padding: 1.5em 0 0;
+            margin-top: 0;
+
+            span {
+                color: #8f8f8f;
+                font-weight: 400;
+            }
+
+            button {
+                border: none;
+                background-color: transparent;
+                font-weight: 500;
+                color: #8f8f8f;
+                cursor: pointer;
+            }
+        }
+
+    }
+}

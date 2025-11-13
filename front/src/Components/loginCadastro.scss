@@ -1,0 +1,198 @@
+@use '../SASS/variables' as *;
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 100vh;
+    background-color: $background;
+}
+
+// ASIDE
+
+.ladoEsquerdo {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 45%;
+    background-color: $color;
+    padding: 3rem 2rem;
+
+    .logo h3{
+        color: #fff;
+        font-size: 1.5rem;
+        text-align: center;
+    }
+
+    .frases-motivadoras {
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+
+        img {
+            max-width: 400px;
+            width: 100%;
+        }
+
+        h2 {
+            color: #fff;
+            font-size: 2.5rem;
+            margin-top: 0;
+        }
+
+        .textinhos-frase {
+            margin-top: 2em;
+
+            p {
+                color: #BFDBFE;
+                margin: 0.5rem 0;
+            }
+        }
+
+        .copyright {
+            margin-top: 3em;
+            
+            p {
+                color: #BFDBFE;
+            }
+        }
+    }
+}
+
+// LOGIN / CADASTRO
+
+.login-cadastro {
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    margin: auto;
+    padding: 4em;
+    width: 550px;
+    height: 700px;
+    background-color: #fff;
+    border-radius: 20px;
+
+    .titulo-lc {
+        margin-bottom: 2em;
+        min-height: 100px;
+
+        h1{
+            font-size: 2.4rem;
+            color: $color-font;
+        }
+
+        p {
+            color: $color-font-grey;
+        }
+    }
+
+    .btns {
+        display: flex;
+        gap: 24px;
+
+        .tab-button {
+            border: none;
+            background-color: #fff;
+            color: $color-font-grey;
+            font-size: 1rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+
+            &:hover {
+                color: #374151;
+            }
+    
+            &.active {
+                color: $color;
+                border-bottom-color: $color;
+            }
+        }
+
+        button {
+            border: none;
+            background-color: #fff;
+            color: $color-font;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 2em;
+            cursor: pointer;
+        }
+
+    }
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;    
+
+    .email-cnt,
+    .senha-cnt,
+    .nome-cnt,
+    .confirmar-cnt {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        input {
+            padding: 18px;
+            border: 1px solid #c3c3c3;
+            border-radius: 10px;
+            background-color: $background;
+        }
+
+
+    }
+
+    .esquecerSenha a{
+        text-decoration: none;
+        color: $color;
+    }
+
+    .btn {
+        padding: 10px;
+        border-radius: 10px;
+        border: none;
+        background-color: $color;
+        color: #fff;
+        font-size: 1rem;
+        cursor: pointer;
+    }
+}
+
+.n-conta {
+    display: flex;
+    align-items: baseline;
+    gap: 20px;
+    margin-top: 2em;
+
+    p {
+        color: $color-font-grey;
+    }
+
+    .btn-cadastro {
+        border: none;
+        background-color: transparent;
+        color: $color;
+        cursor: pointer;
+    }
+}
+
+.error-message {
+    background-color: #fee;
+    color: #c33;
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    border: 1px solid #fcc;
+    font-size: 0.9rem;
+}
