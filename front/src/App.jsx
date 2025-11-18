@@ -36,7 +36,10 @@ function App() {
 
         setLoading(false);
       } else {
-        navigate('/login');
+        // navigate('/login');
+        setUser(null);
+        setUserData(null);
+        setLoading(false);
       }
     });
 
@@ -56,15 +59,15 @@ function App() {
   const handleLogout = async () => {
     try {
       await logoutUser();
-      navigate('/login');
+      navigate('/');
     } catch (error) {
       console.error("Erro ao sair:", error.message);
     }
   };
 
-  if (!user) {
-    return <div>Caregando...</div>;
-  }
+  // if (user) {
+  //   return <div>Caregando...</div>;
+  // }
 
   // Tarefas 
 
@@ -110,16 +113,20 @@ function App() {
     }
   };
 
+  const handleLogin = () => {
+    navigate('/login');
+  }
+
   return (
     <>
       <div className="container-app">
         <header>
           <p>Minhas Tarefas</p>
           <button
-            onClick={handleLogout}
-            className='btn-sair'
+            onClick={ user ? handleLogout : handleLogin }
+            className={ user ?  'btn-sair' : 'btn-login'}
           >
-            Sair
+            { user ? 'Sair' : 'Login' }
           </button>
         </header>
 
@@ -127,7 +134,7 @@ function App() {
 
         <main>
           <div className="titulo-nome">
-            <h3>Olá, {userData?.nome}!</h3>
+            <h3>{ user ? 'Olá, ' + `${userData?.nome}!` : 'Olá, seja bem vindo(a)!' }</h3>
           </div>
           <div className="container-tarefas">
             <div className="input-tarefas">
