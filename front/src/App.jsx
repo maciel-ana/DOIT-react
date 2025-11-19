@@ -5,7 +5,12 @@ import {
   addTarefa,
   updateTarefaStatus,
   deleteTarefa,
-  observeTarefas
+  observeTarefas,
+  addTarefaLocal,
+  updateTarefaStatusLocal,
+  deleteTarefaLocal,
+  getTarefasLocal,
+  migrarTarefasParaFirebase
 } from './services/tarefas';
 import { useNavigate } from 'react-router-dom';
 
@@ -30,15 +35,22 @@ function App() {
         try {
           const data = await getUserData(currentUser.uid);
           setUserData(data);
+          
+          // Migrar tarefas do localStorage para o Firebase quando fazer login
+          await migrarTarefasParaFirebase(currentUser.uid);
         } catch (error) {
-          console.error("Erro ao carregar dados")
+          console.error("Erro ao carregar dados", error)
         }
 
         setLoading(false);
       } else {
-        // navigate('/login');
         setUser(null);
         setUserData(null);
+        
+        // Carregar tarefas do localStorage quando não houver usuário
+        const tarefasLocais = getTarefasLocal();
+        setTarefas(tarefasLocais);
+        
         setLoading(false);
       }
     });
@@ -48,11 +60,16 @@ function App() {
 
   useEffect(() => {
     if (user) {
+      // Se houver usuário, observa as tarefas no Firebase
       const unsubscribe = observeTarefas(user.uid, (tarefasAtualizadas) => {
         setTarefas(tarefasAtualizadas);
       });
 
       return () => unsubscribe();
+    } else {
+      // Se não houver usuário, carrega do localStorage
+      const tarefasLocais = getTarefasLocal();
+      setTarefas(tarefasLocais);
     }
   }, [user]);
 
@@ -65,16 +82,22 @@ function App() {
     }
   };
 
-  // if (user) {
-  //   return <div>Caregando...</div>;
-  // }
-
   // Tarefas 
 
   const handleAddTarefa = async (e) => {
     if (e.key === 'Enter' && tarefaInput.trim() !== '' ) {
       try {
-        await addTarefa(user.uid, tarefaInput);
+        if (user) {
+          // Se houver usuário, adiciona no Firebase
+          await addTarefa(user.uid, tarefaInput);
+        } else {
+          // Se não houver usuário, adiciona no localStorage
+          addTarefaLocal(tarefaInput);
+          
+          // Atualiza o estado local
+          const tarefasAtualizadas = getTarefasLocal();
+          setTarefas(tarefasAtualizadas);
+        }
         setTarefaInput('');
       } catch (error) {
         console.error("Erro ao adicionar tarefa", error);
@@ -84,7 +107,17 @@ function App() {
 
   const handleToggleTarefa = async (id, concluida) => {
     try {
-      await updateTarefaStatus(id, !concluida);
+      if (user) {
+        // Se houver usuário, atualiza no Firebase
+        await updateTarefaStatus(id, !concluida);
+      } else {
+        // Se não houver usuário, atualiza no localStorage
+        updateTarefaStatusLocal(id, !concluida);
+        
+        // Atualiza o estado local
+        const tarefasAtualizadas = getTarefasLocal();
+        setTarefas(tarefasAtualizadas);
+      }
     } catch (error) {
       console.error("Erro ao atualizar tarefa: ", error);
     }
@@ -106,8 +139,19 @@ function App() {
   const handleLimparConcluidas = async () => {
     try {
       const tarefasConcluidas = tarefas.filter(tarefa => tarefa.concluida);
-      const deletePromises = tarefasConcluidas.map(tarefa => deleteTarefa(tarefa.id));
-      await Promise.all(deletePromises);
+      
+      if (user) {
+        // Se houver usuário, deleta do Firebase
+        const deletePromises = tarefasConcluidas.map(tarefa => deleteTarefa(tarefa.id));
+        await Promise.all(deletePromises);
+      } else {
+        // Se não houver usuário, deleta do localStorage
+        tarefasConcluidas.forEach(tarefa => deleteTarefaLocal(tarefa.id));
+        
+        // Atualiza o estado local
+        const tarefasAtualizadas = getTarefasLocal();
+        setTarefas(tarefasAtualizadas);
+      }
     } catch (error) {
       console.error("Erro ao limpar tarefas", error);
     }
